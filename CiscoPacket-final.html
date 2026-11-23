@@ -1,0 +1,2410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Proyecto final de Ingeniería de Telecomunicaciones (UNFV): aprende Cisco Packet Tracer, configura redes, calcula subredes y practica con un simulador interactivo.">
+  <meta name="author" content="Kurt Axel Davila Trinidad">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='10'%20fill='%23c7000b'/%3E%3Ctext%20x='32'%20y='43'%20font-size='30'%20font-family='Arial'%20font-weight='bold'%20text-anchor='middle'%20fill='white'%3EPT%3C/text%3E%3C/svg%3E">
+  <title>Cisco Packet Tracer: Simulación de Redes | Proyecto Final de Telecomunicaciones</title>
+  <style>
+    :root {
+      --red: #c7000b;
+      --red-dark: #9e0009;
+      --topbar: #1c1e22;
+      --dark: #0e131f;
+      --text: #18181b;
+      --muted: #52525b;
+      --bg-gray: #f4f5f7;
+      --line: #e2e5ec;
+      --maxw: 1220px;
+    }
+
+    /* Elementos HTML5 como bloque (cap. 17: compatibilidad con navegadores antiguos) */
+    header, nav, section, article, aside, footer, figure {
+      display: block;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.6;
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Barra superior */
+    .topbar {
+      background: var(--topbar);
+      color: #d4d4d8;
+      font-size: 12px;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 60;
+    }
+
+    .topbar .wrap {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .top-btn {
+      background: none;
+      border: none;
+      color: #e4e4e7;
+      font-size: 12px;
+      cursor: pointer;
+      padding: 6px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .top-btn:hover {
+      background: #2f333b;
+      color: #ffffff;
+    }
+
+    /* Logo universidad */
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .uni-logo {
+      display: inline-flex;
+      align-items: center;
+      background: #ffffff;
+      border-radius: 4px;
+      padding: 2px 5px;
+      line-height: 0;
+    }
+
+    .uni-logo img {
+      height: 24px;
+      width: auto;
+      display: block;
+    }
+
+    .drawer {
+      display: none;
+      background: #f1f3f6;
+      border-bottom: 1px solid var(--line);
+      padding: 20px 0;
+    }
+
+    .drawer.open {
+      display: block;
+    }
+
+    .drawer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .drawer-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--red);
+      padding: 14px 16px;
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+    }
+
+    .drawer-card strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .drawer-card span {
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    .lang-box {
+      position: relative;
+    }
+
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+      min-width: 140px;
+      z-index: 80;
+    }
+
+    .lang-dropdown.open {
+      display: block;
+    }
+
+    .lang-dropdown button {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 9px 12px;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .lang-dropdown button:hover {
+      background: #f5f5f5;
+      color: var(--red);
+    }
+
+    /* Navbar */
+    header.navbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo {
+      text-decoration: none;
+      color: #111111;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+    }
+
+    .logo-badge {
+      background: var(--red);
+      color: #ffffff;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 2px;
+      letter-spacing: 0.7px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a,
+    .nav-links button {
+      background: none;
+      border: none;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 8px 2px;
+      border-bottom: 2px solid transparent;
+      font-family: inherit;
+    }
+
+    .nav-links a:hover,
+    .nav-links button:hover,
+    .nav-links button.active {
+      color: var(--red);
+      border-bottom-color: var(--red);
+    }
+
+    .megamenu {
+      display: none;
+      background: #ffffff;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+      padding: 28px 0;
+    }
+
+    .megamenu.open {
+      display: block;
+    }
+
+    .mega-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+
+    .mega-col h3 {
+      font-size: 15px;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--red);
+    }
+
+    .mega-col ul {
+      list-style: none;
+    }
+
+    .mega-col li {
+      margin-bottom: 7px;
+    }
+
+    .mega-col a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    .mega-col a:hover {
+      color: var(--red);
+    }
+
+    /* Portada grande (Hero) */
+    .hero {
+      position: relative;
+      background: #090d16;
+      color: #ffffff;
+      min-height: 480px;
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      position: relative;
+      min-height: 480px;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    .hero-cover-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(95deg, rgba(7, 11, 20, 0.9) 0%, rgba(10, 16, 30, 0.74) 55%, rgba(10, 16, 30, 0.48) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 72px 0;
+    }
+
+    .slide-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .kicker {
+      display: inline-block;
+      background: rgba(199, 0, 11, 0.35);
+      border: 1px solid rgba(255, 110, 118, 0.6);
+      color: #ffb3b8;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      margin-bottom: 14px;
+    }
+
+    .slide h1,
+    .slide h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.18;
+      margin-bottom: 16px;
+    }
+
+    .slide p {
+      color: #e2e8f0;
+      font-size: 16px;
+      margin-bottom: 24px;
+      max-width: 620px;
+    }
+
+    .btn-red {
+      display: inline-block;
+      background: var(--red);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 14.5px;
+      border-radius: 2px;
+      margin-right: 10px;
+    }
+
+    .btn-red:hover {
+      background: var(--red-dark);
+    }
+
+    .btn-light {
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      background: rgba(0, 0, 0, 0.35);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 11px 22px;
+      font-size: 14.5px;
+      border-radius: 2px;
+    }
+
+    .hero-box {
+      background: rgba(10, 15, 28, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      padding: 20px;
+    }
+
+    .hero-box-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-bottom: 10px;
+    }
+
+    .slide-controls {
+      position: relative;
+      z-index: 3;
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .slide-btn {
+      background: rgba(0, 0, 0, 0.45);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .slide-btn.active,
+    .slide-btn:hover {
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    /* Secciones */
+    section.sec {
+      padding: 66px 0;
+    }
+
+    section.sec-gray {
+      background: var(--bg-gray);
+    }
+
+    .sec-head {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 38px;
+    }
+
+    .sec-head h2 {
+      font-size: clamp(24px, 3vw, 34px);
+      margin-bottom: 10px;
+    }
+
+    .sec-head p {
+      color: var(--muted);
+      font-size: 15.5px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .tab-btn {
+      background: #ffffff;
+      border: 1px solid #cccccc;
+      color: var(--text);
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: #ffffff;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-photo {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-top {
+      background: #1a2639;
+      color: #ffffff;
+      padding: 18px 20px;
+      border-bottom: 3px solid var(--red);
+    }
+
+    .card-top small {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #ff9ca2;
+      margin-bottom: 4px;
+    }
+
+    .card-top h3 {
+      font-size: 18px;
+    }
+
+    .card-body {
+      padding: 18px 20px;
+      color: var(--muted);
+      font-size: 14.5px;
+    }
+
+    /* Simulador interactivo */
+    .sim-box {
+      background: #0f172a;
+      color: #f8fafc;
+      border-radius: 6px;
+      padding: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 30px;
+      align-items: center;
+      margin-top: 34px;
+      border: 1px solid #1e293b;
+    }
+
+    .sim-box label {
+      display: block;
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+      margin-top: 14px;
+    }
+
+    .sim-box select,
+    .sim-box input[type="range"] {
+      width: 100%;
+    }
+
+    .sim-box select {
+      background: #1e293b;
+      color: #ffffff;
+      border: 1px solid #334155;
+      padding: 9px 12px;
+      border-radius: 4px;
+    }
+
+    .scope {
+      background: #060a12;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    canvas {
+      width: 100%;
+      height: 180px;
+      display: block;
+    }
+
+    .scope-info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #1e293b;
+      font-size: 13px;
+      color: #38bdf8;
+    }
+
+    footer {
+      background: #16181d url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='48'%20height='48'%3E%3Cpath%20d='M48%200H0V48'%20fill='none'%20stroke='%232a2f3a'%20stroke-width='1'/%3E%3C/svg%3E") repeat;
+      color: #a1a1aa;
+      padding: 40px 0;
+      font-size: 13.5px;
+    }
+
+    .foot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    footer h3,
+    footer h4 {
+      color: #ffffff;
+      margin-bottom: 10px;
+      font-size: 14.5px;
+    }
+
+    footer ul {
+      list-style: none;
+    }
+
+    footer li {
+      margin-bottom: 6px;
+    }
+
+    footer a {
+      color: #a1a1aa;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #ffffff;
+    }
+
+    /* Construye tu Red */
+    .net-msg {
+      margin-top: 16px;
+      background: #060a12;
+      border: 1px solid #1e293b;
+      border-left: 3px solid #38bdf8;
+      padding: 10px 12px;
+      font-size: 13.5px;
+      color: #e2e8f0;
+    }
+
+    .net-msg.ok {
+      border-left-color: #22c55e;
+      color: #86efac;
+    }
+
+    .net-msg.warn {
+      border-left-color: var(--red);
+      color: #ffb3b8;
+    }
+
+    .net-reset {
+      margin-top: 14px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .net-board {
+      position: relative;
+      height: 280px;
+      overflow: hidden;
+    }
+
+    .net-links {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .net-dev {
+      position: absolute;
+      z-index: 1;
+      width: 88px;
+      padding: 10px 6px;
+      background: #1a2639;
+      color: #ffffff;
+      border: 1px solid #334155;
+      border-bottom: 3px solid var(--red);
+      border-radius: 4px;
+      text-align: center;
+      font-size: 13px;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .net-dev.dragging {
+      cursor: grabbing;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .net-ico {
+      display: block;
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    .net-port {
+      position: absolute;
+      right: -9px;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      margin-top: -8px;
+      background: var(--red);
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    /* Secciones nuevas */
+    .card-body ul {
+      padding-left: 18px;
+    }
+
+    .cmd {
+      background: #060a12;
+      color: #4ade80;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 12.5px;
+      line-height: 1.55;
+      padding: 12px 14px;
+      border-radius: 4px;
+      margin-top: 10px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .sim-box input[type="text"] {
+      width: 100%;
+      background: #1e293b;
+      color: #ffffff;
+      border: 1px solid #334155;
+      padding: 9px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #1e293b;
+      font-size: 13.5px;
+      color: #cbd5e1;
+    }
+
+    .calc-row b {
+      color: #38bdf8;
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    .quiz-q {
+      font-size: 15px;
+      font-weight: 600;
+      color: #f8fafc;
+    }
+
+    .quiz-opt {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: #1e293b;
+      color: #ffffff;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      font-size: 13.5px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .quiz-opt:hover {
+      border-color: var(--red);
+    }
+
+    .quiz-opt.right {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.15);
+    }
+
+    .quiz-opt.wrong {
+      border-color: var(--red);
+      background: rgba(199, 0, 11, 0.2);
+    }
+
+    .quiz-fb {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #cbd5e1;
+      min-height: 20px;
+    }
+
+    /* Cap. 6 y 14: tablas */
+    .table-wrap {
+      overflow-x: auto;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      margin-top: 28px;
+    }
+
+    .table-wrap table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14.5px;
+    }
+
+    .table-wrap caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: 700;
+      padding: 14px 18px;
+      background: #1a2639;
+      color: #ffffff;
+      border-bottom: 3px solid var(--red);
+    }
+
+    .table-wrap th,
+    .table-wrap td {
+      padding: 11px 18px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .table-wrap thead th {
+      background: #f1f3f6;
+      color: var(--muted);
+      font-size: 12.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .table-wrap tbody tr:nth-child(even) {
+      background: #fafbfc;
+    }
+
+    .table-wrap tbody tr:hover {
+      background: #fff1f2;
+    }
+
+    .table-wrap tbody th {
+      white-space: nowrap;
+    }
+
+    /* Cap. 3 y 8: listas de definición, abreviaturas */
+    .card-body ol {
+      padding-left: 20px;
+    }
+
+    .card-body dt {
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 8px;
+    }
+
+    .card-body dd {
+      margin-left: 0;
+    }
+
+    abbr[title] {
+      text-decoration: underline dotted;
+      cursor: help;
+    }
+
+    /* Cap. 7 y 15: formularios y estados :focus */
+    .sim-box input[type="email"],
+    .sim-box textarea {
+      width: 100%;
+      background: #1e293b;
+      color: #ffffff;
+      border: 1px solid #334155;
+      padding: 9px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .sim-box textarea {
+      resize: vertical;
+    }
+
+    .sim-box fieldset {
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 8px 12px 12px;
+      margin-top: 14px;
+    }
+
+    .sim-box legend {
+      font-size: 13px;
+      color: #cbd5e1;
+      padding: 0 6px;
+    }
+
+    .sim-box label.opt {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 6px 16px 0 0;
+    }
+
+    .sim-box input:focus,
+    .sim-box select:focus,
+    .sim-box textarea:focus,
+    .quiz-opt:focus-visible,
+    .slide-btn:focus-visible,
+    .tab-btn:focus-visible,
+    .btn-red:focus-visible,
+    .btn-light:focus-visible {
+      outline: 2px solid #38bdf8;
+      outline-offset: 2px;
+    }
+
+    /* Enlace para saltar al contenido (accesibilidad) */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--red);
+      color: #ffffff;
+      padding: 8px 14px;
+      z-index: 100;
+    }
+
+    .skip-link:focus {
+      left: 8px;
+      top: 8px;
+    }
+
+    /* Cap. 5 y 17: figure y figcaption sobre la foto */
+    .card figure {
+      position: relative;
+    }
+
+    .card figcaption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 15, 28, 0.72);
+      color: #e2e8f0;
+      font-size: 12px;
+      padding: 5px 12px;
+    }
+
+    @media (max-width: 860px) {
+      .slide-grid,
+      .sim-box,
+      .scope-info {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#senales">Saltar al contenido</a>
+
+  <noscript>
+    <div style="background:#c7000b;color:#fff;padding:12px;text-align:center;">
+      Activa JavaScript para usar los menús interactivos y la sección Construye tu Red.
+    </div>
+  </noscript>
+
+  <!-- Barra superior -->
+  <div class="topbar" id="inicio">
+    <div class="wrap">
+      <div class="top-left">
+        <span class="uni-logo" title="Universidad Nacional Federico Villarreal">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBfvvaSFZFE9Str4z-XMWfyRlR6qxcF9t9dfodHQC8UWh3neTnUEfpAmM&s=10" alt="Logo de la Universidad Nacional Federico Villarreal (UNFV)" onerror="this.parentNode.style.display='none'">
+        </span>
+        <button type="button" class="top-btn" id="drawerBtn">
+          <span>Cisco Packet Tracer • Proyecto</span>
+          <span>▾</span>
+        </button>
+      </div>
+
+      <span>Universidad Nacional Federico Villarreal • Ing. de Telecomunicaciones</span>
+    </div>
+  </div>
+
+  <!-- Cajón desplegable -->
+  <nav class="drawer" id="drawerPanel" aria-label="Accesos rápidos">
+    <div class="wrap drawer-grid">
+      <a href="#senales" class="drawer-card">
+        <strong>¿Qué es Cisco Packet Tracer?</strong>
+        <span>Simulador de redes, dispositivos, modos y protocolos.</span>
+      </a>
+      <a href="#enfoque" class="drawer-card">
+        <strong>¿Qué podemos configurar?</strong>
+        <span>Routers, switches, VLAN, enrutamiento y seguridad.</span>
+      </a>
+      <a href="#resalta" class="drawer-card">
+        <strong>¿Qué resalta de la herramienta?</strong>
+        <span>Práctica sin costo, modo simulación y certificaciones.</span>
+      </a>
+      <a href="#comandos" class="drawer-card">
+        <strong>Comandos, Subredes y Quiz</strong>
+        <span>Modelo OSI, CLI de Cisco, calculadora y evaluación.</span>
+      </a>
+      <a href="#simulador" class="drawer-card">
+        <strong>Construye tu Red</strong>
+        <span>Arrastra y conecta un PC, un Switch y un Router.</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="wrap nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-badge">PACKET TRACER</span>
+        <span>Redes y Simulación</span>
+      </a>
+
+      <nav aria-label="Navegación principal">
+      <ul class="nav-links">
+        <li><a href="#senales">Introducción</a></li>
+        <li><button type="button" id="megaBtn">Enfoque y Áreas ▾</button></li>
+        <li><a href="#resalta">Lo que Resalta</a></li>
+        <li><a href="#simulador">Construye tu Red</a></li>
+      </ul>
+      </nav>
+    </div>
+
+    <nav class="megamenu" id="megaPanel" aria-label="Menú de áreas">
+      <div class="wrap mega-grid">
+        <div class="mega-col">
+          <h3>Introducción</h3>
+          <ul>
+            <li><a href="#senales">Dispositivos y Cableado</a></li>
+            <li><a href="#senales">Modo Tiempo Real y Simulación</a></li>
+            <li><a href="#senales">Direccionamiento IP y Latencia</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h3>Configuración Básica</h3>
+          <ul>
+            <li><a href="#enfoque">Routers y Switches (CLI)</a></li>
+            <li><a href="#enfoque">VLAN y Enlaces Troncales</a></li>
+            <li><a href="#enfoque">Wi-Fi y Puntos de Acceso</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h3>Protocolos y Seguridad</h3>
+          <ul>
+            <li><a href="#enfoque">Enrutamiento: RIP, OSPF y EIGRP</a></li>
+            <li><a href="#enfoque">DHCP, DNS y NAT</a></li>
+            <li><a href="#enfoque">ACL y Seguridad de Puertos</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h3>Aprende Más</h3>
+          <ul>
+            <li><a href="#osi">Modelo OSI y TCP/IP</a></li>
+            <li><a href="#comandos">Comandos Esenciales</a></li>
+            <li><a href="#subredes">Calculadora de Subredes</a></li>
+            <li><a href="#quiz">Quiz de Conocimientos</a></li>
+            <li><a href="#proceso">Proceso de Diseño</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h3>Lo que Resalta</h3>
+          <ul>
+            <li><a href="#resalta">Práctica sin Hardware Físico</a></li>
+            <li><a href="#resalta">Preparación CCNA</a></li>
+            <li><a href="#simulador">Construye tu Red</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Portada grande (Hero) -->
+  <section class="hero">
+    <div class="slide active">
+      <img class="hero-cover-img" width="1600" height="600" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22bg%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22%23070b16%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22%2313264a%22/%3E%3C/linearGradient%3E%3Cfilter%20id=%22g%22%20x=%22-20%25%22%20y=%22-20%25%22%20width=%22140%25%22%20height=%22140%25%22%3E%3CfeGaussianBlur%20stdDeviation=%222.5%22%20result=%22b%22/%3E%3CfeMerge%3E%3CfeMergeNode%20in=%22b%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%3Cpattern%20id=%22grid%22%20width=%2248%22%20height=%2248%22%20patternUnits=%22userSpaceOnUse%22%3E%3Cpath%20d=%22M48%200H0V48%22%20fill=%22none%22%20stroke=%22%231e3a5f%22%20stroke-width=%221%22%20opacity=%22.55%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(%23bg)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(%23grid)%22/%3E%3Cline%20x1=%221210%22%20y1=%2280%22%20x2=%221000%22%20y2=%22215%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%223.2s%22%20repeatCount=%22indefinite%22%20path=%22M1210%2080%20L1000%20215%22/%3E%3C/circle%3E%3Cline%20x1=%221210%22%20y1=%2280%22%20x2=%221420%22%20y2=%22215%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%223.6s%22%20repeatCount=%22indefinite%22%20path=%22M1210%2080%20L1420%20215%22/%3E%3C/circle%3E%3Cline%20x1=%221000%22%20y1=%22215%22%20x2=%221420%22%20y2=%22215%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.8s%22%20repeatCount=%22indefinite%22%20path=%22M1000%20215%20L1420%20215%22/%3E%3C/circle%3E%3Cline%20x1=%221000%22%20y1=%22215%22%20x2=%221000%22%20y2=%22365%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.4s%22%20repeatCount=%22indefinite%22%20path=%22M1000%20215%20L1000%20365%22/%3E%3C/circle%3E%3Cline%20x1=%221420%22%20y1=%22215%22%20x2=%221420%22%20y2=%22365%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.6s%22%20repeatCount=%22indefinite%22%20path=%22M1420%20215%20L1420%20365%22/%3E%3C/circle%3E%3Cline%20x1=%221000%22%20y1=%22365%22%20x2=%22890%22%20y2=%22500%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.2s%22%20repeatCount=%22indefinite%22%20path=%22M1000%20365%20L890%20500%22/%3E%3C/circle%3E%3Cline%20x1=%221000%22%20y1=%22365%22%20x2=%221110%22%20y2=%22500%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.5s%22%20repeatCount=%22indefinite%22%20path=%22M1000%20365%20L1110%20500%22/%3E%3C/circle%3E%3Cline%20x1=%221420%22%20y1=%22365%22%20x2=%221310%22%20y2=%22500%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.3s%22%20repeatCount=%22indefinite%22%20path=%22M1420%20365%20L1310%20500%22/%3E%3C/circle%3E%3Cline%20x1=%221420%22%20y1=%22365%22%20x2=%221530%22%20y2=%22500%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.7s%22%20repeatCount=%22indefinite%22%20path=%22M1420%20365%20L1530%20500%22/%3E%3C/circle%3E%3Cg%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22%3E%3Cellipse%20cx=%221210%22%20cy=%2280%22%20rx=%2252%22%20ry=%2226%22/%3E%3Ccircle%20cx=%221186%22%20cy=%2266%22%20r=%2222%22/%3E%3Ccircle%20cx=%221228%22%20cy=%2260%22%20r=%2226%22/%3E%3C/g%3E%3Cellipse%20cx=%221210%22%20cy=%2280%22%20rx=%2250%22%20ry=%2224%22%20fill=%22%230b2f4d%22/%3E%3Ctext%20x=%221210%22%20y=%2286%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2217%22%20fill=%22%23e0f2fe%22%3EINTERNET%3C/text%3E%3Ccircle%20cx=%221000%22%20cy=%22215%22%20r=%2234%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%22986%22%20y1=%22215%22%20x2=%221014%22%20y2=%22215%22/%3E%3Cline%20x1=%221000%22%20y1=%22201%22%20x2=%221000%22%20y2=%22229%22/%3E%3Cpolygon%20points=%221022,215%201013,209%201013,221%22/%3E%3Cpolygon%20points=%22978,215%20987,209%20987,221%22/%3E%3Cpolygon%20points=%221000,193%20994,202%201006,202%22/%3E%3Cpolygon%20points=%221000,237%20994,228%201006,228%22/%3E%3C/g%3E%3Ctext%20x=%221000%22%20y=%22271%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ER1%3C/text%3E%3Ccircle%20cx=%221420%22%20cy=%22215%22%20r=%2234%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%221406%22%20y1=%22215%22%20x2=%221434%22%20y2=%22215%22/%3E%3Cline%20x1=%221420%22%20y1=%22201%22%20x2=%221420%22%20y2=%22229%22/%3E%3Cpolygon%20points=%221442,215%201433,209%201433,221%22/%3E%3Cpolygon%20points=%221398,215%201407,209%201407,221%22/%3E%3Cpolygon%20points=%221420,193%201414,202%201426,202%22/%3E%3Cpolygon%20points=%221420,237%201414,228%201426,228%22/%3E%3C/g%3E%3Ctext%20x=%221420%22%20y=%22271%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ER2%3C/text%3E%3Crect%20x=%22952%22%20y=%22341%22%20width=%2296%22%20height=%2248%22%20rx=%227%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%22972%22%20y1=%22357%22%20x2=%221024%22%20y2=%22357%22/%3E%3Cpolygon%20points=%221032,357%201022,351%201022,363%22/%3E%3Cline%20x1=%221028%22%20y1=%22374%22%20x2=%22976%22%20y2=%22374%22/%3E%3Cpolygon%20points=%22968,374%20978,368%20978,380%22/%3E%3C/g%3E%3Ctext%20x=%221000%22%20y=%22411%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ESW1%3C/text%3E%3Crect%20x=%221372%22%20y=%22341%22%20width=%2296%22%20height=%2248%22%20rx=%227%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%221392%22%20y1=%22357%22%20x2=%221444%22%20y2=%22357%22/%3E%3Cpolygon%20points=%221452,357%201442,351%201442,363%22/%3E%3Cline%20x1=%221448%22%20y1=%22374%22%20x2=%221396%22%20y2=%22374%22/%3E%3Cpolygon%20points=%221388,374%201398,368%201398,380%22/%3E%3C/g%3E%3Ctext%20x=%221420%22%20y=%22411%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ESW2%3C/text%3E%3Crect%20x=%22860%22%20y=%22476%22%20width=%2260%22%20height=%2240%22%20rx=%224%22%20fill=%22%230f2745%22%20stroke=%22%2338bdf8%22%20stroke-width=%223%22/%3E%3Crect%20x=%22867%22%20y=%22483%22%20width=%2246%22%20height=%2226%22%20fill=%22%230a1830%22/%3E%3Crect%20x=%22884%22%20y=%22516%22%20width=%2212%22%20height=%228%22%20fill=%22%2338bdf8%22/%3E%3Crect%20x=%22870%22%20y=%22524%22%20width=%2240%22%20height=%225%22%20rx=%222%22%20fill=%22%2338bdf8%22/%3E%3Ctext%20x=%22890%22%20y=%22550%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3EPC1%3C/text%3E%3Crect%20x=%221080%22%20y=%22476%22%20width=%2260%22%20height=%2240%22%20rx=%224%22%20fill=%22%230f2745%22%20stroke=%22%2338bdf8%22%20stroke-width=%223%22/%3E%3Crect%20x=%221087%22%20y=%22483%22%20width=%2246%22%20height=%2226%22%20fill=%22%230a1830%22/%3E%3Crect%20x=%221104%22%20y=%22516%22%20width=%2212%22%20height=%228%22%20fill=%22%2338bdf8%22/%3E%3Crect%20x=%221090%22%20y=%22524%22%20width=%2240%22%20height=%225%22%20rx=%222%22%20fill=%22%2338bdf8%22/%3E%3Ctext%20x=%221110%22%20y=%22550%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3EPC2%3C/text%3E%3Crect%20x=%221280%22%20y=%22476%22%20width=%2260%22%20height=%2240%22%20rx=%224%22%20fill=%22%230f2745%22%20stroke=%22%2338bdf8%22%20stroke-width=%223%22/%3E%3Crect%20x=%221287%22%20y=%22483%22%20width=%2246%22%20height=%2226%22%20fill=%22%230a1830%22/%3E%3Crect%20x=%221304%22%20y=%22516%22%20width=%2212%22%20height=%228%22%20fill=%22%2338bdf8%22/%3E%3Crect%20x=%221290%22%20y=%22524%22%20width=%2240%22%20height=%225%22%20rx=%222%22%20fill=%22%2338bdf8%22/%3E%3Ctext%20x=%221310%22%20y=%22550%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3EPC3%3C/text%3E%3Crect%20x=%221502%22%20y=%22470%22%20width=%2256%22%20height=%2216%22%20rx=%223%22%20fill=%22%230f2745%22%20stroke=%22%2338bdf8%22%20stroke-width=%222.5%22/%3E%3Ccircle%20cx=%221548%22%20cy=%22478%22%20r=%223%22%20fill=%22%2322c55e%22/%3E%3Crect%20x=%221502%22%20y=%22490%22%20width=%2256%22%20height=%2216%22%20rx=%223%22%20fill=%22%230f2745%22%20stroke=%22%2338bdf8%22%20stroke-width=%222.5%22/%3E%3Ccircle%20cx=%221548%22%20cy=%22498%22%20r=%223%22%20fill=%22%2322c55e%22/%3E%3Crect%20x=%221502%22%20y=%22510%22%20width=%2256%22%20height=%2216%22%20rx=%223%22%20fill=%22%230f2745%22%20stroke=%22%2338bdf8%22%20stroke-width=%222.5%22/%3E%3Ccircle%20cx=%221548%22%20cy=%22518%22%20r=%223%22%20fill=%22%2322c55e%22/%3E%3Ctext%20x=%221530%22%20y=%22550%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ESRV%3C/text%3E%3Ctext%20x=%221000%22%20y=%22425%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2215%22%20fill=%22%23049fd9%22%3E192.168.10.0/24%3C/text%3E%3Ctext%20x=%221420%22%20y=%22425%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2215%22%20fill=%22%23049fd9%22%3E192.168.20.0/24%3C/text%3E%3Ctext%20x=%221100%22%20y=%22172%22%20font-family=%22monospace%22%20font-size=%2215%22%20fill=%22%23049fd9%22%3EOSPF%20area%200%3C/text%3E%3C/svg%3E" alt="Portada: topología de red con routers, switches y PC en Cisco Packet Tracer">
+      <div class="hero-overlay"></div>
+      <div class="wrap hero-content">
+        <div class="slide-grid">
+          <div>
+            <span class="kicker">Proyecto Final • Cisco Packet Tracer</span>
+            <h1>Diseña, Configura y Simula Redes con Cisco Packet Tracer</h1>
+            <p>
+              Exploramos cómo construir topologías con routers, switches y dispositivos finales,
+              configurarlos por línea de comandos y observar el recorrido de los paquetes en la red.
+            </p>
+            <a href="#senales" class="btn-red">Explorar Herramienta</a>
+            <a href="#simulador" class="btn-light">Construye tu Red</a>
+          </div>
+          <div class="hero-box">
+            <div class="hero-box-top">
+              <span>Paquete ICMP en Tránsito</span>
+              <span>Ping: 4 ms</span>
+            </div>
+            <svg viewBox="0 0 320 110" width="100%" height="110">
+              <line x1="0" y1="55" x2="320" y2="55" stroke="#334155" stroke-dasharray="4 4"/>
+              <path d="M0,55 Q20,10 40,55 T80,55 T120,55 T160,55 T200,55 T240,55 T280,55 T320,55"
+                    fill="none" stroke="#ff4d57" stroke-width="2.5"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="slide-controls">
+          <button type="button" class="slide-btn active" data-idx="0">1. Simulación de Redes</button>
+          <button type="button" class="slide-btn" data-idx="1">2. Topologías y Configuración</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img class="hero-cover-img" width="1600" height="600" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22bg%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22%23070b16%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22%2313264a%22/%3E%3C/linearGradient%3E%3Cfilter%20id=%22g%22%20x=%22-20%25%22%20y=%22-20%25%22%20width=%22140%25%22%20height=%22140%25%22%3E%3CfeGaussianBlur%20stdDeviation=%222.5%22%20result=%22b%22/%3E%3CfeMerge%3E%3CfeMergeNode%20in=%22b%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%3Cpattern%20id=%22grid%22%20width=%2248%22%20height=%2248%22%20patternUnits=%22userSpaceOnUse%22%3E%3Cpath%20d=%22M48%200H0V48%22%20fill=%22none%22%20stroke=%22%231e3a5f%22%20stroke-width=%221%22%20opacity=%22.55%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(%23bg)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(%23grid)%22/%3E%3Crect%20x=%22860%22%20y=%2270%22%20width=%22640%22%20height=%22270%22%20rx=%2210%22%20fill=%22%23060a12%22%20stroke=%22%231e3a5f%22%20stroke-width=%222%22/%3E%3Crect%20x=%22860%22%20y=%2270%22%20width=%22640%22%20height=%2234%22%20rx=%2210%22%20fill=%22%2313264a%22/%3E%3Ccircle%20cx=%22884%22%20cy=%2287%22%20r=%226%22%20fill=%22%23c7000b%22/%3E%3Ccircle%20cx=%22906%22%20cy=%2287%22%20r=%226%22%20fill=%22%23f59e0b%22/%3E%3Ccircle%20cx=%22928%22%20cy=%2287%22%20r=%226%22%20fill=%22%2322c55e%22/%3E%3Ctext%20x=%221180%22%20y=%2293%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2215%22%20fill=%22%2394a3b8%22%3ERouter1%20-%20CLI%3C/text%3E%3Ctext%20x=%22882%22%20y=%22132%22%20font-family=%22monospace%22%20font-size=%2217%22%20fill=%22%234ade80%22%3ERouter%26gt;%20enable%3C/text%3E%3Ctext%20x=%22882%22%20y=%22158%22%20font-family=%22monospace%22%20font-size=%2217%22%20fill=%22%234ade80%22%3ERouter%23%20configure%20terminal%3C/text%3E%3Ctext%20x=%22882%22%20y=%22184%22%20font-family=%22monospace%22%20font-size=%2217%22%20fill=%22%234ade80%22%3ERouter(config)%23%20interface%20g0/0%3C/text%3E%3Ctext%20x=%22882%22%20y=%22210%22%20font-family=%22monospace%22%20font-size=%2217%22%20fill=%22%234ade80%22%3ERouter(config-if)%23%20ip%20address%20192.168.10.1%20255.255.255.0%3C/text%3E%3Ctext%20x=%22882%22%20y=%22236%22%20font-family=%22monospace%22%20font-size=%2217%22%20fill=%22%234ade80%22%3ERouter(config-if)%23%20no%20shutdown%3C/text%3E%3Ctext%20x=%22882%22%20y=%22262%22%20font-family=%22monospace%22%20font-size=%2217%22%20fill=%22%234ade80%22%3ERouter(config-if)%23%20exit%3C/text%3E%3Ctext%20x=%22882%22%20y=%22288%22%20font-family=%22monospace%22%20font-size=%2217%22%20fill=%22%234ade80%22%3ERouter(config)%23%20router%20ospf%201%3C/text%3E%3Ctext%20x=%22882%22%20y=%22314%22%20font-family=%22monospace%22%20font-size=%2217%22%20fill=%22%234ade80%22%3ERouter(config-router)%23%20network%20192.168.10.0%200.0.0.255%20area%200%3C/text%3E%3Cline%20x1=%221180%22%20y1=%22455%22%20x2=%22990%22%20y2=%22521%22%20stroke=%22%2322c55e%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.4s%22%20repeatCount=%22indefinite%22%20path=%22M1180%20455%20L990%20521%22/%3E%3C/circle%3E%3Cline%20x1=%221180%22%20y1=%22455%22%20x2=%221180%22%20y2=%22531%22%20stroke=%22%23f59e0b%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.4s%22%20repeatCount=%22indefinite%22%20path=%22M1180%20455%20L1180%20531%22/%3E%3C/circle%3E%3Cline%20x1=%221180%22%20y1=%22455%22%20x2=%221370%22%20y2=%22521%22%20stroke=%22%23c7000b%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.4s%22%20repeatCount=%22indefinite%22%20path=%22M1180%20455%20L1370%20521%22/%3E%3C/circle%3E%3Crect%20x=%221132%22%20y=%22431%22%20width=%2296%22%20height=%2248%22%20rx=%227%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%221152%22%20y1=%22447%22%20x2=%221204%22%20y2=%22447%22/%3E%3Cpolygon%20points=%221212,447%201202,441%201202,453%22/%3E%3Cline%20x1=%221208%22%20y1=%22464%22%20x2=%221156%22%20y2=%22464%22/%3E%3Cpolygon%20points=%221148,464%201158,458%201158,470%22/%3E%3C/g%3E%3Ctext%20x=%221180%22%20y=%22501%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%20dy=%22-78%22%3ESW1%3C/text%3E%3Crect%20x=%22960%22%20y=%22521%22%20width=%2260%22%20height=%2240%22%20rx=%224%22%20fill=%22%230f2745%22%20stroke=%22%2322c55e%22%20stroke-width=%223%22/%3E%3Crect%20x=%22967%22%20y=%22528%22%20width=%2246%22%20height=%2226%22%20fill=%22%230a1830%22/%3E%3Crect%20x=%22984%22%20y=%22561%22%20width=%2212%22%20height=%228%22%20fill=%22%2322c55e%22/%3E%3Crect%20x=%22970%22%20y=%22569%22%20width=%2240%22%20height=%225%22%20rx=%222%22%20fill=%22%2322c55e%22/%3E%3Ctext%20x=%22990%22%20y=%22595%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3EVLAN%2010%3C/text%3E%3Crect%20x=%221150%22%20y=%22531%22%20width=%2260%22%20height=%2240%22%20rx=%224%22%20fill=%22%230f2745%22%20stroke=%22%23f59e0b%22%20stroke-width=%223%22/%3E%3Crect%20x=%221157%22%20y=%22538%22%20width=%2246%22%20height=%2226%22%20fill=%22%230a1830%22/%3E%3Crect%20x=%221174%22%20y=%22571%22%20width=%2212%22%20height=%228%22%20fill=%22%23f59e0b%22/%3E%3Crect%20x=%221160%22%20y=%22579%22%20width=%2240%22%20height=%225%22%20rx=%222%22%20fill=%22%23f59e0b%22/%3E%3Ctext%20x=%221180%22%20y=%22605%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3EVLAN%2020%3C/text%3E%3Crect%20x=%221340%22%20y=%22521%22%20width=%2260%22%20height=%2240%22%20rx=%224%22%20fill=%22%230f2745%22%20stroke=%22%23c7000b%22%20stroke-width=%223%22/%3E%3Crect%20x=%221347%22%20y=%22528%22%20width=%2246%22%20height=%2226%22%20fill=%22%230a1830%22/%3E%3Crect%20x=%221364%22%20y=%22561%22%20width=%2212%22%20height=%228%22%20fill=%22%23c7000b%22/%3E%3Crect%20x=%221350%22%20y=%22569%22%20width=%2240%22%20height=%225%22%20rx=%222%22%20fill=%22%23c7000b%22/%3E%3Ctext%20x=%221370%22%20y=%22595%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3EVLAN%2030%3C/text%3E%3C/svg%3E" alt="Configuración de router por CLI y VLAN en Cisco Packet Tracer">
+      <div class="hero-overlay"></div>
+      <div class="wrap hero-content">
+        <div class="slide-grid">
+          <div>
+            <span class="kicker">Enfoque de la Herramienta</span>
+            <h2>Routers, Switches, VLAN y Protocolos de Enrutamiento</h2>
+            <p>
+              Integramos configuración de dispositivos Cisco IOS, direccionamiento IP, enrutamiento dinámico
+              y seguridad para practicar el diseño de redes empresariales sin equipos físicos.
+            </p>
+            <a href="#enfoque" class="btn-red">Ver Configuración</a>
+            <a href="#resalta" class="btn-light">Lo que Resalta</a>
+          </div>
+          <div class="hero-box">
+            <div class="hero-box-top">
+              <span>Topología de Red</span>
+              <span>Enlace Activo</span>
+            </div>
+            <svg viewBox="0 0 320 110" width="100%" height="110">
+              <circle cx="50" cy="55" r="8" fill="#c7000b"/>
+              <circle cx="160" cy="28" r="8" fill="#38bdf8"/>
+              <circle cx="160" cy="82" r="8" fill="#38bdf8"/>
+              <circle cx="270" cy="55" r="8" fill="#22c55e"/>
+              <line x1="50" y1="55" x2="160" y2="28" stroke="#94a3b8" stroke-width="2"/>
+              <line x1="50" y1="55" x2="160" y2="82" stroke="#94a3b8" stroke-width="2"/>
+              <line x1="160" y1="28" x2="270" y2="55" stroke="#94a3b8" stroke-width="2"/>
+              <line x1="160" y1="82" x2="270" y2="55" stroke="#94a3b8" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="slide-controls">
+          <button type="button" class="slide-btn" data-idx="0">1. Simulación de Redes</button>
+          <button type="button" class="slide-btn active" data-idx="1">2. Topologías y Configuración</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ¿Qué es Cisco Packet Tracer? -->
+  <section id="senales" class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>¿Qué es Cisco Packet Tracer?</h2>
+        <p>
+          Es un simulador de redes creado por Cisco que permite diseñar, configurar y probar redes de forma virtual.
+        </p>
+      </div>
+
+      <div class="tabs">
+        <button type="button" class="tab-btn active" data-panel="p-tipos">Dispositivos y Medios</button>
+        <button type="button" class="tab-btn" data-panel="p-mod">Modos y Entorno</button>
+        <button type="button" class="tab-btn" data-panel="p-ruido">Direccionamiento y Rendimiento</button>
+      </div>
+
+      <div class="panel active" id="p-tipos">
+        <article class="card">
+          <figure>
+            <img class="card-photo" width="800" height="300" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20800%20300%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22bg%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22%23070b16%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22%2313264a%22/%3E%3C/linearGradient%3E%3Cfilter%20id=%22g%22%20x=%22-20%25%22%20y=%22-20%25%22%20width=%22140%25%22%20height=%22140%25%22%3E%3CfeGaussianBlur%20stdDeviation=%222.5%22%20result=%22b%22/%3E%3CfeMerge%3E%3CfeMergeNode%20in=%22b%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%3Cpattern%20id=%22grid%22%20width=%2248%22%20height=%2248%22%20patternUnits=%22userSpaceOnUse%22%3E%3Cpath%20d=%22M48%200H0V48%22%20fill=%22none%22%20stroke=%22%231e3a5f%22%20stroke-width=%221%22%20opacity=%22.55%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width=%22800%22%20height=%22300%22%20fill=%22url(%23bg)%22/%3E%3Crect%20width=%22800%22%20height=%22300%22%20fill=%22url(%23grid)%22/%3E%3Cline%20x1=%22170%22%20y1=%22150%22%20x2=%22400%22%20y2=%22150%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%223s%22%20repeatCount=%22indefinite%22%20path=%22M170%20150%20L400%20150%22/%3E%3C/circle%3E%3Cline%20x1=%22400%22%20y1=%22150%22%20x2=%22630%22%20y2=%22150%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%223s%22%20repeatCount=%22indefinite%22%20path=%22M400%20150%20L630%20150%22/%3E%3C/circle%3E%3Crect%20x=%22120%22%20y=%22126%22%20width=%2260%22%20height=%2240%22%20rx=%224%22%20fill=%22%230f2745%22%20stroke=%22%2338bdf8%22%20stroke-width=%223%22/%3E%3Crect%20x=%22127%22%20y=%22133%22%20width=%2246%22%20height=%2226%22%20fill=%22%230a1830%22/%3E%3Crect%20x=%22144%22%20y=%22166%22%20width=%2212%22%20height=%228%22%20fill=%22%2338bdf8%22/%3E%3Crect%20x=%22130%22%20y=%22174%22%20width=%2240%22%20height=%225%22%20rx=%222%22%20fill=%22%2338bdf8%22/%3E%3Ctext%20x=%22150%22%20y=%22200%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3EPC%3C/text%3E%3Crect%20x=%22352%22%20y=%22126%22%20width=%2296%22%20height=%2248%22%20rx=%227%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%22372%22%20y1=%22142%22%20x2=%22424%22%20y2=%22142%22/%3E%3Cpolygon%20points=%22432,142%20422,136%20422,148%22/%3E%3Cline%20x1=%22428%22%20y1=%22159%22%20x2=%22376%22%20y2=%22159%22/%3E%3Cpolygon%20points=%22368,159%20378,153%20378,165%22/%3E%3C/g%3E%3Ctext%20x=%22400%22%20y=%22196%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ESwitch%3C/text%3E%3Ccircle%20cx=%22650%22%20cy=%22150%22%20r=%2234%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%22636%22%20y1=%22150%22%20x2=%22664%22%20y2=%22150%22/%3E%3Cline%20x1=%22650%22%20y1=%22136%22%20x2=%22650%22%20y2=%22164%22/%3E%3Cpolygon%20points=%22672,150%20663,144%20663,156%22/%3E%3Cpolygon%20points=%22628,150%20637,144%20637,156%22/%3E%3Cpolygon%20points=%22650,128%20644,137%20656,137%22/%3E%3Cpolygon%20points=%22650,172%20644,163%20656,163%22/%3E%3C/g%3E%3Ctext%20x=%22650%22%20y=%22206%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ERouter%3C/text%3E%3C/svg%3E" alt="PC, switch y router conectados en una topología">
+            <figcaption>PC, switch y router conectados</figcaption>
+          </figure>
+          <div class="card-top">
+            <small>Dispositivos Intermedios</small>
+            <h3>Routers y Switches</h3>
+          </div>
+          <div class="card-body">
+            Equipos que interconectan redes y segmentos; se configuran por CLI de Cisco IOS o por su pestaña de configuración.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Dispositivos Finales</small>
+            <h3>PC, Servidores y Teléfonos IP</h3>
+          </div>
+          <div class="card-body">
+            Generan y reciben el tráfico de la red; permiten probar servicios como HTTP, DNS, DHCP y correo.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Conexiones</small>
+            <h3>Tipos de Cableado</h3>
+          </div>
+          <div class="card-body">
+            Cable directo, cruzado, consola, serial y fibra para conectar dispositivos según el tipo de puerto.
+          </div>
+        </article>
+      </div>
+
+      <div class="panel" id="p-mod">
+        <article class="card">
+          <div class="card-top">
+            <small>Tiempo Real</small>
+            <h3>Modo Realtime</h3>
+          </div>
+          <div class="card-body">
+            La red funciona de forma continua, como en un entorno real, y responde de inmediato a los comandos y pruebas.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Paso a Paso</small>
+            <h3>Modo Simulación</h3>
+          </div>
+          <div class="card-body">
+            Permite ver cada paquete viajar por la red, capa por capa, y analizar su PDU en cada dispositivo.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Escenarios</small>
+            <h3>Actividades y Laboratorios</h3>
+          </div>
+          <div class="card-body">
+            Archivos .pka y .pkt con consignas y evaluación automática, usados en cursos de Cisco Networking Academy.
+          </div>
+        </article>
+      </div>
+
+      <div class="panel" id="p-ruido">
+        <article class="card">
+          <div class="card-top">
+            <small>Capa 3</small>
+            <h3>Direccionamiento IP</h3>
+          </div>
+          <div class="card-body">
+            Asignación de direcciones IPv4 e IPv6, máscaras de subred y puertas de enlace para cada dispositivo.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Diagnóstico</small>
+            <h3>Ping y Traceroute</h3>
+          </div>
+          <div class="card-body">
+            Herramientas para verificar la conectividad, medir el tiempo de respuesta y ubicar fallas en la ruta.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Rendimiento</small>
+            <h3>Ancho de Banda y Latencia</h3>
+          </div>
+          <div class="card-body">
+            Definen la velocidad de transferencia y el tiempo de respuesta de los enlaces dentro de la topología.
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ¿Qué podemos configurar? -->
+  <section id="enfoque" class="sec sec-gray">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>¿Qué Podemos Configurar en Packet Tracer?</h2>
+        <p>
+          Desde redes locales básicas hasta topologías con enrutamiento dinámico, servicios y seguridad.
+        </p>
+      </div>
+
+      <div class="panel active">
+        <article class="card">
+          <figure>
+            <img class="card-photo" width="800" height="300" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20800%20300%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22bg%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22%23070b16%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22%2313264a%22/%3E%3C/linearGradient%3E%3Cfilter%20id=%22g%22%20x=%22-20%25%22%20y=%22-20%25%22%20width=%22140%25%22%20height=%22140%25%22%3E%3CfeGaussianBlur%20stdDeviation=%222.5%22%20result=%22b%22/%3E%3CfeMerge%3E%3CfeMergeNode%20in=%22b%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%3Cpattern%20id=%22grid%22%20width=%2248%22%20height=%2248%22%20patternUnits=%22userSpaceOnUse%22%3E%3Cpath%20d=%22M48%200H0V48%22%20fill=%22none%22%20stroke=%22%231e3a5f%22%20stroke-width=%221%22%20opacity=%22.55%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width=%22800%22%20height=%22300%22%20fill=%22url(%23bg)%22/%3E%3Crect%20width=%22800%22%20height=%22300%22%20fill=%22url(%23grid)%22/%3E%3Cline%20x1=%22400%22%20y1=%2290%22%20x2=%22170%22%20y2=%22206%22%20stroke=%22%2322c55e%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%223s%22%20repeatCount=%22indefinite%22%20path=%22M400%2090%20L170%20206%22/%3E%3C/circle%3E%3Cline%20x1=%22400%22%20y1=%2290%22%20x2=%22400%22%20y2=%22211%22%20stroke=%22%23f59e0b%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%223s%22%20repeatCount=%22indefinite%22%20path=%22M400%2090%20L400%20211%22/%3E%3C/circle%3E%3Cline%20x1=%22400%22%20y1=%2290%22%20x2=%22630%22%20y2=%22206%22%20stroke=%22%23c7000b%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%223s%22%20repeatCount=%22indefinite%22%20path=%22M400%2090%20L630%20206%22/%3E%3C/circle%3E%3Crect%20x=%22352%22%20y=%2266%22%20width=%2296%22%20height=%2248%22%20rx=%227%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%22372%22%20y1=%2282%22%20x2=%22424%22%20y2=%2282%22/%3E%3Cpolygon%20points=%22432,82%20422,76%20422,88%22/%3E%3Cline%20x1=%22428%22%20y1=%2299%22%20x2=%22376%22%20y2=%2299%22/%3E%3Cpolygon%20points=%22368,99%20378,93%20378,105%22/%3E%3C/g%3E%3Ctext%20x=%22400%22%20y=%22136%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ESwitch%3C/text%3E%3Crect%20x=%22140%22%20y=%22206%22%20width=%2260%22%20height=%2240%22%20rx=%224%22%20fill=%22%230f2745%22%20stroke=%22%2322c55e%22%20stroke-width=%223%22/%3E%3Crect%20x=%22147%22%20y=%22213%22%20width=%2246%22%20height=%2226%22%20fill=%22%230a1830%22/%3E%3Crect%20x=%22164%22%20y=%22246%22%20width=%2212%22%20height=%228%22%20fill=%22%2322c55e%22/%3E%3Crect%20x=%22150%22%20y=%22254%22%20width=%2240%22%20height=%225%22%20rx=%222%22%20fill=%22%2322c55e%22/%3E%3Ctext%20x=%22170%22%20y=%22280%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3EVLAN%2010%3C/text%3E%3Crect%20x=%22370%22%20y=%22211%22%20width=%2260%22%20height=%2240%22%20rx=%224%22%20fill=%22%230f2745%22%20stroke=%22%23f59e0b%22%20stroke-width=%223%22/%3E%3Crect%20x=%22377%22%20y=%22218%22%20width=%2246%22%20height=%2226%22%20fill=%22%230a1830%22/%3E%3Crect%20x=%22394%22%20y=%22251%22%20width=%2212%22%20height=%228%22%20fill=%22%23f59e0b%22/%3E%3Crect%20x=%22380%22%20y=%22259%22%20width=%2240%22%20height=%225%22%20rx=%222%22%20fill=%22%23f59e0b%22/%3E%3Ctext%20x=%22400%22%20y=%22285%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3EVLAN%2020%3C/text%3E%3Crect%20x=%22600%22%20y=%22206%22%20width=%2260%22%20height=%2240%22%20rx=%224%22%20fill=%22%230f2745%22%20stroke=%22%23c7000b%22%20stroke-width=%223%22/%3E%3Crect%20x=%22607%22%20y=%22213%22%20width=%2246%22%20height=%2226%22%20fill=%22%230a1830%22/%3E%3Crect%20x=%22624%22%20y=%22246%22%20width=%2212%22%20height=%228%22%20fill=%22%23c7000b%22/%3E%3Crect%20x=%22610%22%20y=%22254%22%20width=%2240%22%20height=%225%22%20rx=%222%22%20fill=%22%23c7000b%22/%3E%3Ctext%20x=%22630%22%20y=%22280%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3EVLAN%2030%3C/text%3E%3C/svg%3E" alt="Switch con tres VLAN en Packet Tracer">
+            <figcaption>Switch con tres VLAN</figcaption>
+          </figure>
+          <div class="card-top">
+            <small>Área 01</small>
+            <h3>Switching y VLAN</h3>
+          </div>
+          <div class="card-body">
+            Creación de VLAN, puertos de acceso y troncales 802.1Q, y comunicación entre VLAN con router-on-a-stick.
+          </div>
+        </article>
+        <article class="card">
+          <figure>
+            <img class="card-photo" width="800" height="300" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20800%20300%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22bg%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22%23070b16%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22%2313264a%22/%3E%3C/linearGradient%3E%3Cfilter%20id=%22g%22%20x=%22-20%25%22%20y=%22-20%25%22%20width=%22140%25%22%20height=%22140%25%22%3E%3CfeGaussianBlur%20stdDeviation=%222.5%22%20result=%22b%22/%3E%3CfeMerge%3E%3CfeMergeNode%20in=%22b%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%3Cpattern%20id=%22grid%22%20width=%2248%22%20height=%2248%22%20patternUnits=%22userSpaceOnUse%22%3E%3Cpath%20d=%22M48%200H0V48%22%20fill=%22none%22%20stroke=%22%231e3a5f%22%20stroke-width=%221%22%20opacity=%22.55%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width=%22800%22%20height=%22300%22%20fill=%22url(%23bg)%22/%3E%3Crect%20width=%22800%22%20height=%22300%22%20fill=%22url(%23grid)%22/%3E%3Cline%20x1=%22400%22%20y1=%2270%22%20x2=%22200%22%20y2=%22200%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.5s%22%20repeatCount=%22indefinite%22%20path=%22M400%2070%20L200%20200%22/%3E%3C/circle%3E%3Cline%20x1=%22400%22%20y1=%2270%22%20x2=%22600%22%20y2=%22200%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.9s%22%20repeatCount=%22indefinite%22%20path=%22M400%2070%20L600%20200%22/%3E%3C/circle%3E%3Cline%20x1=%22200%22%20y1=%22200%22%20x2=%22600%22%20y2=%22200%22%20stroke=%22%2338bdf8%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20opacity=%22.85%22%20filter=%22url(%23g)%22/%3E%3Ccircle%20r=%225%22%20fill=%22%23fff%22%3E%3CanimateMotion%20dur=%222.2s%22%20repeatCount=%22indefinite%22%20path=%22M200%20200%20L600%20200%22/%3E%3C/circle%3E%3Ccircle%20cx=%22400%22%20cy=%2270%22%20r=%2234%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%22386%22%20y1=%2270%22%20x2=%22414%22%20y2=%2270%22/%3E%3Cline%20x1=%22400%22%20y1=%2256%22%20x2=%22400%22%20y2=%2284%22/%3E%3Cpolygon%20points=%22422,70%20413,64%20413,76%22/%3E%3Cpolygon%20points=%22378,70%20387,64%20387,76%22/%3E%3Cpolygon%20points=%22400,48%20394,57%20406,57%22/%3E%3Cpolygon%20points=%22400,92%20394,83%20406,83%22/%3E%3C/g%3E%3Ctext%20x=%22400%22%20y=%22126%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ER1%3C/text%3E%3Ccircle%20cx=%22200%22%20cy=%22200%22%20r=%2234%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%22186%22%20y1=%22200%22%20x2=%22214%22%20y2=%22200%22/%3E%3Cline%20x1=%22200%22%20y1=%22186%22%20x2=%22200%22%20y2=%22214%22/%3E%3Cpolygon%20points=%22222,200%20213,194%20213,206%22/%3E%3Cpolygon%20points=%22178,200%20187,194%20187,206%22/%3E%3Cpolygon%20points=%22200,178%20194,187%20206,187%22/%3E%3Cpolygon%20points=%22200,222%20194,213%20206,213%22/%3E%3C/g%3E%3Ctext%20x=%22200%22%20y=%22256%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ER2%3C/text%3E%3Ccircle%20cx=%22600%22%20cy=%22200%22%20r=%2234%22%20fill=%22%230b2f4d%22%20stroke=%22%23049fd9%22%20stroke-width=%223%22/%3E%3Cg%20stroke=%22%23e0f2fe%22%20stroke-width=%223%22%20fill=%22%23e0f2fe%22%3E%3Cline%20x1=%22586%22%20y1=%22200%22%20x2=%22614%22%20y2=%22200%22/%3E%3Cline%20x1=%22600%22%20y1=%22186%22%20x2=%22600%22%20y2=%22214%22/%3E%3Cpolygon%20points=%22622,200%20613,194%20613,206%22/%3E%3Cpolygon%20points=%22578,200%20587,194%20587,206%22/%3E%3Cpolygon%20points=%22600,178%20594,187%20606,187%22/%3E%3Cpolygon%20points=%22600,222%20594,213%20606,213%22/%3E%3C/g%3E%3Ctext%20x=%22600%22%20y=%22256%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2216%22%20fill=%22%23cbd5e1%22%3ER3%3C/text%3E%3Ctext%20x=%22400%22%20y=%22255%22%20text-anchor=%22middle%22%20font-family=%22monospace%22%20font-size=%2218%22%20fill=%22%23049fd9%22%3EOSPF%20-%20area%200%3C/text%3E%3C/svg%3E" alt="Tres routers enlazados con OSPF">
+            <figcaption>Tres routers enlazados con OSPF</figcaption>
+          </figure>
+          <div class="card-top">
+            <small>Área 02</small>
+            <h3>Enrutamiento: RIP, OSPF y EIGRP</h3>
+          </div>
+          <div class="card-body">
+            Rutas estáticas y protocolos dinámicos para que los routers aprendan y compartan las rutas de la red.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Área 03</small>
+            <h3>Servicios: DHCP, DNS y NAT</h3>
+          </div>
+          <div class="card-body">
+            Asignación automática de IP, resolución de nombres y traducción de direcciones para salir a Internet.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Área 04</small>
+            <h3>Seguridad de Red</h3>
+          </div>
+          <div class="card-body">
+            Listas de control de acceso (ACL), seguridad de puertos, contraseñas cifradas y acceso remoto por SSH.
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ¿Qué resalta? + Simulador -->
+  <section id="resalta" class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>¿Qué Resalta de Cisco Packet Tracer?</h2>
+        <p>
+          Una herramienta gratuita y visual que acerca la teoría de redes a la práctica profesional.
+        </p>
+      </div>
+
+      <div class="panel active">
+        <article class="card">
+          <div class="card-top">
+            <small>Destacado 01</small>
+            <h3>Práctica sin Hardware Físico</h3>
+          </div>
+          <div class="card-body">
+            Permite armar y probar redes completas sin comprar equipos, reduciendo costos y riesgos de error.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Destacado 02</small>
+            <h3>Visualización del Tráfico</h3>
+          </div>
+          <div class="card-body">
+            El modo simulación muestra cómo viaja cada paquete y qué ocurre en las capas del modelo OSI.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Destacado 03</small>
+            <h3>Preparación para CCNA</h3>
+          </div>
+          <div class="card-body">
+            Apoya el aprendizaje de los temas de las certificaciones de Cisco y el trabajo en redes empresariales.
+          </div>
+        </article>
+      </div>
+
+      <!-- Construye tu Red -->
+      <div class="sim-box" id="simulador">
+        <div>
+          <span class="kicker" style="margin-bottom:8px;">Laboratorio Interactivo</span>
+          <h3>Construye tu Red</h3>
+          <p style="font-size:13.5px;color:#94a3b8;margin-top:4px;">
+            Arrastra los equipos por el área de trabajo. Para tender un cable, arrastra el punto rojo de un equipo hasta otro. Haz clic en un cable para quitarlo.
+          </p>
+
+          <div class="net-msg" id="netMsg" aria-live="polite">Conecta el PC al Switch y el Switch al Router.</div>
+          <button type="button" class="btn-red net-reset" id="netReset">Reiniciar</button>
+        </div>
+
+        <div class="scope">
+          <div class="net-board" id="netBoard">
+            <svg class="net-links" id="netLinks" xmlns="http://www.w3.org/2000/svg"></svg>
+            <div class="net-dev" data-type="pc" data-x="0.04" data-y="0.75">
+              <span class="net-ico">💻</span><strong>PC</strong>
+              <i class="net-port" title="Arrastra para conectar"></i>
+            </div>
+            <div class="net-dev" data-type="switch" data-x="0.5" data-y="0.05">
+              <span class="net-ico">🔀</span><strong>Switch</strong>
+              <i class="net-port" title="Arrastra para conectar"></i>
+            </div>
+            <div class="net-dev" data-type="router" data-x="0.92" data-y="0.75">
+              <span class="net-ico">📡</span><strong>Router</strong>
+              <i class="net-port" title="Arrastra para conectar"></i>
+            </div>
+          </div>
+          <div class="scope-info">
+            <span id="netDevs">Dispositivos: 3/3</span>
+            <span id="netCables">Cables: 0/2</span>
+            <span id="netState">Red: Sin conexión</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modelo OSI -->
+  <section id="osi" class="sec sec-gray">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Modelo OSI y TCP/IP</h2>
+        <p>
+          Para configurar una red hay que saber qué hace cada capa y qué equipo trabaja en ella.
+        </p>
+      </div>
+
+      <div class="panel active">
+        <article class="card">
+          <div class="card-top">
+            <small>Capa 7</small>
+            <h3>Aplicación</h3>
+          </div>
+          <div class="card-body">
+            Servicios que usa el usuario: HTTP, DNS, DHCP, correo. En Packet Tracer se prueban con el servidor y el navegador del PC.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Capa 6</small>
+            <h3>Presentación</h3>
+          </div>
+          <div class="card-body">
+            Formato, compresión y cifrado de los datos (TLS, JPEG, ASCII).
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Capa 5</small>
+            <h3>Sesión</h3>
+          </div>
+          <div class="card-body">
+            Abre, mantiene y cierra el diálogo entre dos equipos.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Capa 4</small>
+            <h3>Transporte</h3>
+          </div>
+          <div class="card-body">
+            TCP (confiable) y UDP (rápido) con puertos. La unidad de datos es el segmento.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Capa 3</small>
+            <h3>Red</h3>
+          </div>
+          <div class="card-body">
+            Direccionamiento IP y enrutamiento. Trabaja aquí el router; la unidad es el paquete.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Capa 2</small>
+            <h3>Enlace de Datos</h3>
+          </div>
+          <div class="card-body">
+            Direcciones MAC y tramas Ethernet. Trabaja aquí el switch y se forman las VLAN.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Capa 1</small>
+            <h3>Física</h3>
+          </div>
+          <div class="card-body">
+            Cables, fibra y señales eléctricas u ópticas que transportan bits.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>TCP/IP</small>
+            <h3>Modelo de 4 Capas</h3>
+          </div>
+          <div class="card-body">
+            Aplicación, Transporte, Internet y Acceso a la red: es la versión práctica que usa Internet.
+          </div>
+        </article>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <caption>Tipos de cable en Cisco Packet Tracer</caption>
+          <thead>
+            <tr>
+              <th scope="col">Cable</th>
+              <th scope="col">Conecta</th>
+              <th scope="col">Ejemplo de uso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Directo (straight-through)</th><td>Dispositivos de distinto tipo</td><td>PC a Switch, Switch a Router</td></tr>
+            <tr><th scope="row">Cruzado (cross-over)</th><td>Dispositivos del mismo tipo</td><td>Switch a Switch, PC a Router</td></tr>
+            <tr><th scope="row">Consola</th><td>PC con el puerto de consola</td><td>Configurar un router o switch por CLI</td></tr>
+            <tr><th scope="row">Serial (DCE/DTE)</th><td>Router con Router</td><td>Enlaces WAN entre sucursales</td></tr>
+            <tr><th scope="row">Fibra óptica</th><td>Equipos con puertos de fibra</td><td>Enlaces de alta capacidad y larga distancia</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comandos -->
+  <section id="comandos" class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Comandos Esenciales de Cisco IOS</h2>
+        <p>
+          Los comandos que más se usan en la CLI de Packet Tracer, listos para copiar y probar.
+        </p>
+      </div>
+
+      <div class="panel active">
+        <article class="card">
+          <div class="card-top">
+            <small>Básico</small>
+            <h3>Modos y Nombre</h3>
+          </div>
+          <div class="card-body">
+            <pre class="cmd">Router&gt; enable
+Router# configure terminal
+Router(config)# hostname R1
+R1(config)# enable secret clave123</pre>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Interfaces</small>
+            <h3>Direccionar un Puerto</h3>
+          </div>
+          <div class="card-body">
+            <pre class="cmd">R1(config)# interface g0/0
+R1(config-if)# ip address 192.168.10.1 255.255.255.0
+R1(config-if)# no shutdown</pre>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Verificación</small>
+            <h3>Comprobar la Red</h3>
+          </div>
+          <div class="card-body">
+            <pre class="cmd">R1# show ip interface brief
+R1# show ip route
+R1# show running-config
+PC&gt; ping 192.168.10.1</pre>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Switching</small>
+            <h3>Crear una VLAN</h3>
+          </div>
+          <div class="card-body">
+            <pre class="cmd">SW1(config)# vlan 10
+SW1(config-vlan)# name VENTAS
+SW1(config)# interface fa0/1
+SW1(config-if)# switchport mode access
+SW1(config-if)# switchport access vlan 10</pre>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Enrutamiento</small>
+            <h3>OSPF Básico</h3>
+          </div>
+          <div class="card-body">
+            <pre class="cmd">R1(config)# router ospf 1
+R1(config-router)# network 192.168.10.0 0.0.0.255 area 0</pre>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Seguridad</small>
+            <h3>Acceso Remoto SSH</h3>
+          </div>
+          <div class="card-body">
+            <pre class="cmd">R1(config)# ip domain-name red.local
+R1(config)# crypto key generate rsa
+R1(config)# line vty 0 4
+R1(config-line)# transport input ssh
+R1(config-line)# login local</pre>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Subredes -->
+  <section id="subredes" class="sec sec-gray">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Calculadora de Subredes</h2>
+        <p>
+          Escribe una dirección IPv4 y su prefijo CIDR para obtener red, broadcast y rango de hosts.
+        </p>
+      </div>
+
+      <div class="sim-box" style="margin-top:0;">
+        <div>
+          <span class="kicker" style="margin-bottom:8px;">Utilidad</span>
+          <h3>Calcula tu Subred</h3>
+          <p style="font-size:13.5px;color:#94a3b8;margin-top:4px;">
+            Ejemplo resuelto: 192.168.10.130 /26 pertenece a la red 192.168.10.128, con 62 hosts útiles (del .129 al .190) y broadcast .191.
+          </p>
+
+          <label for="ipInput">Dirección IPv4</label>
+          <input type="text" id="ipInput" value="192.168.10.130" autocomplete="off">
+
+          <label for="cidrInput">Prefijo CIDR: /<span id="cidrOut">26</span></label>
+          <input type="range" id="cidrInput" min="8" max="30" value="26">
+        </div>
+
+        <div class="scope">
+          <div class="calc-row"><span>Dirección de red</span><b id="rNet">-</b></div>
+          <div class="calc-row"><span>Máscara</span><b id="rMask">-</b></div>
+          <div class="calc-row"><span>Broadcast</span><b id="rBc">-</b></div>
+          <div class="calc-row"><span>Primer host</span><b id="rFirst">-</b></div>
+          <div class="calc-row"><span>Último host</span><b id="rLast">-</b></div>
+          <div class="calc-row"><span>Hosts útiles</span><b id="rHosts">-</b></div>
+          <div class="net-msg" id="calcErr" aria-live="polite" style="margin-top:12px;">Introduce una IPv4 válida.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz -->
+  <section id="quiz" class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Pon a Prueba tu Conocimiento</h2>
+        <p>
+          Responde 5 preguntas sobre lo visto en esta página.
+        </p>
+      </div>
+
+      <div class="sim-box" style="margin-top:0;">
+        <div>
+          <span class="kicker" style="margin-bottom:8px;">Evaluación</span>
+          <h3>Quiz de Redes</h3>
+          <p style="font-size:13.5px;color:#94a3b8;margin-top:4px;">
+            Elige una respuesta para ver la explicación y avanzar.
+          </p>
+          <div class="net-msg" id="quizScore" aria-live="polite">Puntaje: 0/5</div>
+          <button type="button" class="btn-red net-reset" id="quizReset">Reiniciar</button>
+        </div>
+
+        <div class="scope">
+          <div class="quiz-q" id="quizQ"></div>
+          <div id="quizOpts"></div>
+          <div class="quiz-fb" id="quizFb" aria-live="polite"></div>
+          <button type="button" class="btn-light net-reset" id="quizNext" style="display:none;cursor:pointer;">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proceso de diseño (cap. 18) -->
+  <section id="proceso" class="sec sec-gray">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Proceso de Diseño del Sitio</h2>
+        <p>
+          Siguiendo el libro HTML &amp; CSS de Jon Duckett: primero el público y los objetivos, después el mapa del sitio y el diseño.
+        </p>
+      </div>
+
+      <div class="panel active">
+        <article class="card">
+          <div class="card-top">
+            <small>Paso 1</small>
+            <h3>Público Objetivo</h3>
+          </div>
+          <div class="card-body">
+            <dl>
+              <dt>Quién</dt><dd>Estudiantes de Ingeniería de Telecomunicaciones y redes.</dd>
+              <dt>Qué buscan</dt><dd>Entender Packet Tracer y practicar sin equipos físicos.</dd>
+              <dt>Con qué frecuencia</dt><dd>Consultas puntuales antes de laboratorios y exámenes.</dd>
+            </dl>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Paso 2</small>
+            <h3>Objetivos del Sitio</h3>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Explicar qué es Packet Tracer y para qué sirve.</li>
+              <li>Dejar practicar con una red, subredes y un quiz.</li>
+              <li>Servir como material de consulta rápida (comandos y OSI).</li>
+            </ul>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Paso 3</small>
+            <h3>Diseño Visual</h3>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Jerarquía visual: un h1 por página y h2/h3 por nivel.</li>
+              <li>Agrupación en tarjetas con el mismo estilo.</li>
+              <li>Navegación constante en la parte superior.</li>
+              <li>Contraste claro entre texto y fondo.</li>
+            </ul>
+          </div>
+        </article>
+        <aside class="card">
+          <div class="card-top">
+            <small>Mapa del sitio</small>
+            <h3>Navegación de la Página</h3>
+          </div>
+          <div class="card-body">
+            <ol>
+              <li><a href="#inicio">Inicio y portada</a></li>
+              <li><a href="#senales">¿Qué es Cisco Packet Tracer?</a></li>
+              <li><a href="#enfoque">¿Qué podemos configurar?</a></li>
+              <li><a href="#simulador">Construye tu Red</a></li>
+              <li><a href="#osi">Modelo OSI y cables</a></li>
+              <li><a href="#comandos">Comandos esenciales</a></li>
+              <li><a href="#subredes">Calculadora de subredes</a></li>
+              <li><a href="#quiz">Quiz</a></li>
+              <li><a href="#contacto">Contacto</a></li>
+              <li><a href="#conclusion">Conclusiones</a></li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Formulario de contacto (cap. 7) -->
+  <section id="contacto" class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Contacto y Comentarios</h2>
+        <p>
+          Cuéntanos qué te pareció el proyecto y qué te gustaría aprender después.
+        </p>
+      </div>
+
+      <div class="sim-box" style="margin-top:0;">
+        <div>
+          <span class="kicker" style="margin-bottom:8px;">Participa</span>
+          <h3>Déjanos tu Opinión</h3>
+          <p style="font-size:13.5px;color:#94a3b8;margin-top:4px;">
+            Completa el formulario. Los campos marcados con * son obligatorios.
+          </p>
+          <div class="net-msg" id="formMsg" aria-live="polite">Aún no has enviado ningún comentario.</div>
+        </div>
+
+        <div class="scope">
+          <form id="feedbackForm">
+            <label for="fNombre">Nombre *</label>
+            <input type="text" id="fNombre" name="nombre" required autocomplete="name">
+
+            <label for="fCorreo">Correo electrónico *</label>
+            <input type="email" id="fCorreo" name="correo" required autocomplete="email">
+
+            <label for="fRol">Soy</label>
+            <select id="fRol" name="rol">
+              <option value="estudiante">Estudiante</option>
+              <option value="docente">Docente</option>
+              <option value="otro">Otro</option>
+            </select>
+
+            <fieldset>
+              <legend>¿Te fue útil la página?</legend>
+              <label class="opt"><input type="radio" name="util" value="si" checked> Sí</label>
+              <label class="opt"><input type="radio" name="util" value="medio"> Más o menos</label>
+              <label class="opt"><input type="radio" name="util" value="no"> No</label>
+            </fieldset>
+
+            <label for="fComentario">Comentario *</label>
+            <textarea id="fComentario" name="comentario" rows="3" required></textarea>
+
+            <button type="submit" class="btn-red net-reset">Enviar comentario</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conclusiones, glosario y referencias -->
+  <section id="conclusion" class="sec sec-gray">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Conclusiones del Proyecto</h2>
+        <p>
+          Lo aprendido al explorar Cisco Packet Tracer.
+        </p>
+      </div>
+
+      <div class="panel active">
+        <article class="card">
+          <div class="card-top">
+            <small>Conclusión 01</small>
+            <h3>Aprendizaje Práctico</h3>
+          </div>
+          <div class="card-body">
+            Packet Tracer permite pasar de la teoría (modelo OSI, IP, VLAN) a la práctica, probando configuraciones sin riesgo y sin equipos físicos.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Conclusión 02</small>
+            <h3>Base para Certificarse</h3>
+          </div>
+          <div class="card-body">
+            Los temas trabajados (direccionamiento, enrutamiento, switching y seguridad) son la base de certificaciones como Cisco CCNA.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Conclusión 03</small>
+            <h3>Limitaciones</h3>
+          </div>
+          <div class="card-body">
+            Es un simulador: no reemplaza el rendimiento ni los fallos reales del hardware, pero es ideal para aprender y diseñar antes de implementar.
+          </div>
+        </article>
+      </div>
+
+      <div style="height:44px;"></div>
+      <div class="sec-head">
+        <h2>Glosario Rápido</h2>
+        <p>
+          Términos clave para entender el resto de la página.
+        </p>
+      </div>
+
+      <div class="panel active">
+        <article class="card">
+          <div class="card-top">
+            <small>Término</small>
+            <h3>Dirección <abbr title="Internet Protocol">IP</abbr></h3>
+          </div>
+          <div class="card-body">
+            Identificador lógico de un equipo en una red (por ejemplo, 192.168.10.1).
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Término</small>
+            <h3>Máscara de Subred</h3>
+          </div>
+          <div class="card-body">
+            Indica qué parte de la IP es la red y cuál es el host.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Término</small>
+            <h3>Gateway</h3>
+          </div>
+          <div class="card-body">
+            Router al que el PC envía el tráfico destinado a otras redes.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Término</small>
+            <h3><abbr title="Virtual Local Area Network (red de área local virtual)">VLAN</abbr></h3>
+          </div>
+          <div class="card-body">
+            Red local virtual que separa grupos de equipos dentro de un mismo switch.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Término</small>
+            <h3>Latencia</h3>
+          </div>
+          <div class="card-body">
+            Tiempo que tarda un paquete en ir y volver, medido con ping.
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Término</small>
+            <h3>Protocolo</h3>
+          </div>
+          <div class="card-body">
+            Conjunto de reglas que permite a los equipos comunicarse (TCP, IP, OSPF).
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <small>Fuentes</small>
+            <h3>Referencias</h3>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Duckett, J. <cite>HTML &amp; CSS: Design and Build Websites</cite>. Wiley, 2011.</li>
+              <li>Cisco Networking Academy: <a href="https://www.netacad.com" target="_blank" rel="noopener">netacad.com</a> (Packet Tracer y cursos CCNA).</li>
+              <li>Kurose, J. y Ross, K. <cite>Redes de Computadoras: Un enfoque descendente</cite>. Pearson.</li>
+              <li>Tanenbaum, A. y Wetherall, D. <cite>Redes de Computadoras</cite>. Pearson.</li>
+              <li>Odom, W. <cite>CCNA 200-301 Official Cert Guide</cite>. Cisco Press.</li>
+              <li><a href="https://datatracker.ietf.org/doc/html/rfc1918" target="_blank" rel="noopener">RFC 1918</a>: Address Allocation for Private Internets (IETF).</li>
+              <li><a href="https://validator.w3.org" target="_blank" rel="noopener">W3C Markup Validation Service</a> para validar el código.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot-grid">
+      <div>
+        <h3>Cisco Packet Tracer</h3>
+        <p>Proyecto final enfocado en simulación de redes, configuración de dispositivos Cisco y análisis de tráfico.</p>
+        <p style="margin-top:8px;">&copy; 2026 Kurt Axel Davila Trinidad • UNFV</p>
+      </div>
+      <div>
+        <h3>Contenido del Proyecto</h3>
+        <ul>
+          <li><a href="#senales">¿Qué es Cisco Packet Tracer?</a></li>
+          <li><a href="#enfoque">¿Qué podemos configurar?</a></li>
+          <li><a href="#resalta">¿Qué resalta de la herramienta?</a></li>
+          <li><a href="#osi">Modelo OSI y TCP/IP</a></li>
+          <li><a href="#comandos">Comandos esenciales</a></li>
+          <li><a href="#proceso">Proceso de diseño del sitio</a></li>
+          <li><a href="#contacto">Contacto y comentarios</a></li>
+          <li><a href="#conclusion">Conclusiones y referencias</a></li>
+          <li><a href="#inicio">Volver arriba ↑</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Práctica Interactiva</h3>
+        <ul>
+          <li><a href="#simulador">Construye tu Red</a></li>
+          <li><a href="#subredes">Calculadora de subredes</a></li>
+          <li><a href="#quiz">Quiz de conocimientos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Datos del Proyecto</h3>
+        <ul>
+          <li>Autor: Kurt Axel Davila Trinidad</li>
+          <li>Curso: TIC</li>
+          <li>Docente: Ciro Rodriguez</li>
+          <li>UNFV • Ing. de Telecomunicaciones • II ciclo</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var drawerBtn = document.getElementById("drawerBtn");
+      var drawerPanel = document.getElementById("drawerPanel");
+      if (drawerBtn && drawerPanel) {
+        drawerBtn.addEventListener("click", function () {
+          drawerPanel.classList.toggle("open");
+        });
+      }
+
+      var langBtn = document.getElementById("langBtn");
+      var langDrop = document.getElementById("langDrop");
+      var langLabel = document.getElementById("langLabel");
+      if (langBtn && langDrop && langLabel) {
+        langBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          langDrop.classList.toggle("open");
+        });
+        langDrop.querySelectorAll("button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            langLabel.textContent = b.getAttribute("data-lang");
+            langDrop.classList.remove("open");
+          });
+        });
+      }
+
+      var megaBtn = document.getElementById("megaBtn");
+      var megaPanel = document.getElementById("megaPanel");
+      if (megaBtn && megaPanel) {
+        megaBtn.addEventListener("click", function () {
+          var isOpen = megaPanel.classList.toggle("open");
+          megaBtn.classList.toggle("active", isOpen);
+        });
+      }
+
+      var slides = document.querySelectorAll(".slide");
+      var slideBtns = document.querySelectorAll(".slide-btn");
+      slideBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var idx = Number(btn.getAttribute("data-idx"));
+          slides.forEach(function (s, i) {
+            s.classList.toggle("active", i === idx);
+          });
+          slideBtns.forEach(function (b, i) {
+            b.classList.toggle("active", i === idx);
+          });
+        });
+      });
+
+      var tabBtns = document.querySelectorAll(".tab-btn");
+      var panels = document.querySelectorAll("#senales .panel");
+      tabBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var targetId = btn.getAttribute("data-panel");
+          tabBtns.forEach(function (b) { b.classList.remove("active"); });
+          panels.forEach(function (p) { p.classList.remove("active"); });
+          btn.classList.add("active");
+          var targetPanel = document.getElementById(targetId);
+          if (targetPanel) targetPanel.classList.add("active");
+        });
+      });
+
+      var board = document.getElementById("netBoard");
+      var svg = document.getElementById("netLinks");
+      var netMsg = document.getElementById("netMsg");
+      var netDevs = document.getElementById("netDevs");
+      var netCables = document.getElementById("netCables");
+      var netState = document.getElementById("netState");
+      var netReset = document.getElementById("netReset");
+
+      if (board && svg) {
+        var NS = "http://www.w3.org/2000/svg";
+        var devs = {};
+        var links = [];
+        var temp = null;
+        var working = false;
+        var t = 0;
+
+        var pkt = document.createElementNS(NS, "circle");
+        pkt.setAttribute("r", "6");
+        pkt.setAttribute("fill", "#ffffff");
+        pkt.style.display = "none";
+
+        board.querySelectorAll(".net-dev").forEach(function (el) {
+          var type = el.getAttribute("data-type");
+          devs[type] = {
+            el: el,
+            fx0: Number(el.getAttribute("data-x")),
+            fy0: Number(el.getAttribute("data-y")),
+            fx: Number(el.getAttribute("data-x")),
+            fy: Number(el.getAttribute("data-y"))
+          };
+        });
+
+        function key(a, b) { return [a, b].sort().join("-"); }
+        function has(a, b) { return links.indexOf(key(a, b)) !== -1; }
+
+        function place(d) {
+          var maxX = board.clientWidth - d.el.offsetWidth;
+          var maxY = board.clientHeight - d.el.offsetHeight;
+          d.el.style.left = Math.round(d.fx * maxX) + "px";
+          d.el.style.top = Math.round(d.fy * maxY) + "px";
+        }
+
+        function center(d) {
+          return {
+            x: d.el.offsetLeft + d.el.offsetWidth / 2,
+            y: d.el.offsetTop + d.el.offsetHeight / 2
+          };
+        }
+
+        function addLine(a, b, color, dashed, onClick) {
+          var ln = document.createElementNS(NS, "line");
+          ln.setAttribute("x1", a.x);
+          ln.setAttribute("y1", a.y);
+          ln.setAttribute("x2", b.x);
+          ln.setAttribute("y2", b.y);
+          ln.setAttribute("stroke", color);
+          ln.setAttribute("stroke-width", "3");
+          ln.setAttribute("stroke-linecap", "round");
+          if (dashed) ln.setAttribute("stroke-dasharray", "6 6");
+          if (onClick) {
+            ln.style.pointerEvents = "stroke";
+            ln.style.cursor = "pointer";
+            ln.addEventListener("click", onClick);
+          }
+          svg.appendChild(ln);
+        }
+
+        function render() {
+          while (svg.firstChild) svg.removeChild(svg.firstChild);
+          links.forEach(function (k) {
+            var parts = k.split("-");
+            addLine(center(devs[parts[0]]), center(devs[parts[1]]),
+              working ? "#22c55e" : "#94a3b8", false, function () {
+                links.splice(links.indexOf(k), 1);
+                update();
+              });
+          });
+          if (temp) {
+            addLine(center(devs[temp.from]), { x: temp.x, y: temp.y }, "#ff4d57", true, null);
+          }
+          svg.appendChild(pkt);
+        }
+
+        function setMsg(text, cls) {
+          netMsg.textContent = text;
+          netMsg.className = "net-msg" + (cls ? " " + cls : "");
+        }
+
+        function update() {
+          var pcSw = has("pc", "switch");
+          var swRt = has("switch", "router");
+          var direct = has("pc", "router");
+          var good = (pcSw ? 1 : 0) + (swRt ? 1 : 0);
+          working = pcSw && swRt && links.length === 2;
+
+          netCables.textContent = "Cables: " + good + "/2";
+          netState.textContent = "Red: " + (working ? "Funcionando" : "Sin conexión");
+
+          if (working) {
+            setMsg("¡La red funciona! El PC llega al Router a través del Switch (ping exitoso).", "ok");
+          } else if (direct) {
+            setMsg("Conexión incorrecta: el PC no va directo al Router. Quita ese cable y usa el Switch.", "warn");
+          } else if (links.length > good) {
+            setMsg("Hay un cable que no corresponde a esta red. Haz clic en él para quitarlo.", "warn");
+          } else if (pcSw && !swRt) {
+            setMsg("Bien. Ahora conecta el Switch al Router.", "");
+          } else if (!pcSw && swRt) {
+            setMsg("Bien. Ahora conecta el PC al Switch.", "");
+          } else {
+            setMsg("Conecta el PC al Switch y el Switch al Router.", "");
+          }
+          pkt.style.display = working ? "block" : "none";
+          render();
+        }
+
+        function bindDevice(type) {
+          var d = devs[type];
+          var port = d.el.querySelector(".net-port");
+          var offX = 0;
+          var offY = 0;
+          var moving = false;
+
+          d.el.addEventListener("pointerdown", function (e) {
+            moving = true;
+            var r = board.getBoundingClientRect();
+            offX = e.clientX - r.left - d.el.offsetLeft;
+            offY = e.clientY - r.top - d.el.offsetTop;
+            d.el.setPointerCapture(e.pointerId);
+            d.el.classList.add("dragging");
+          });
+          d.el.addEventListener("pointermove", function (e) {
+            if (!moving) return;
+            var r = board.getBoundingClientRect();
+            var maxX = board.clientWidth - d.el.offsetWidth;
+            var maxY = board.clientHeight - d.el.offsetHeight;
+            var x = Math.min(Math.max(e.clientX - r.left - offX, 0), maxX);
+            var y = Math.min(Math.max(e.clientY - r.top - offY, 0), maxY);
+            d.fx = maxX > 0 ? x / maxX : 0;
+            d.fy = maxY > 0 ? y / maxY : 0;
+            place(d);
+            render();
+          });
+          function stopMove() {
+            moving = false;
+            d.el.classList.remove("dragging");
+          }
+          d.el.addEventListener("pointerup", stopMove);
+          d.el.addEventListener("pointercancel", stopMove);
+
+          port.addEventListener("pointerdown", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var r = board.getBoundingClientRect();
+            temp = { from: type, x: e.clientX - r.left, y: e.clientY - r.top };
+            port.setPointerCapture(e.pointerId);
+            render();
+          });
+          port.addEventListener("pointermove", function (e) {
+            if (!temp) return;
+            var r = board.getBoundingClientRect();
+            temp.x = e.clientX - r.left;
+            temp.y = e.clientY - r.top;
+            render();
+          });
+          port.addEventListener("pointerup", function (e) {
+            if (!temp) return;
+            var target = document.elementFromPoint(e.clientX, e.clientY);
+            var devEl = target && target.closest ? target.closest(".net-dev") : null;
+            if (devEl) {
+              var other = devEl.getAttribute("data-type");
+              if (other !== type && !has(type, other)) links.push(key(type, other));
+            }
+            temp = null;
+            update();
+          });
+          port.addEventListener("pointercancel", function () {
+            temp = null;
+            render();
+          });
+        }
+
+        Object.keys(devs).forEach(function (type) {
+          place(devs[type]);
+          bindDevice(type);
+        });
+
+        function layoutAll() {
+          Object.keys(devs).forEach(function (type) { place(devs[type]); });
+          render();
+        }
+        window.addEventListener("resize", layoutAll);
+
+        if (netReset) {
+          netReset.addEventListener("click", function () {
+            links = [];
+            temp = null;
+            Object.keys(devs).forEach(function (type) {
+              devs[type].fx = devs[type].fx0;
+              devs[type].fy = devs[type].fy0;
+              place(devs[type]);
+            });
+            update();
+          });
+        }
+
+        function lerp(a, b, k) {
+          return { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k };
+        }
+
+        function animate() {
+          if (working) {
+            t += 0.012;
+            var p = t % 2;
+            var s = p <= 1 ? p : 2 - p;
+            var a = center(devs.pc);
+            var b = center(devs.switch);
+            var c = center(devs.router);
+            var pos = s < 0.5 ? lerp(a, b, s * 2) : lerp(b, c, (s - 0.5) * 2);
+            pkt.setAttribute("cx", pos.x);
+            pkt.setAttribute("cy", pos.y);
+          }
+          requestAnimationFrame(animate);
+        }
+
+        update();
+        animate();
+      }
+
+      // Calculadora de subredes
+      var ipInput = document.getElementById("ipInput");
+      var cidrInput = document.getElementById("cidrInput");
+      if (ipInput && cidrInput) {
+        var cidrOut = document.getElementById("cidrOut");
+        var calcErr = document.getElementById("calcErr");
+        var rIds = { net: "rNet", mask: "rMask", bc: "rBc", first: "rFirst", last: "rLast", hosts: "rHosts" };
+
+        function toInt(ip) {
+          var parts = ip.trim().split(".");
+          if (parts.length !== 4) return null;
+          var n = 0;
+          for (var i = 0; i < 4; i++) {
+            if (!/^\d{1,3}$/.test(parts[i]) || Number(parts[i]) > 255) return null;
+            n = n * 256 + Number(parts[i]);
+          }
+          return n;
+        }
+        function toIp(n) {
+          return [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join(".");
+        }
+        function setR(k, v) { document.getElementById(rIds[k]).textContent = v; }
+
+        function calcSubnet() {
+          var c = Number(cidrInput.value);
+          cidrOut.textContent = c;
+          var ip = toInt(ipInput.value);
+          if (ip === null) {
+            Object.keys(rIds).forEach(function (k) { setR(k, "-"); });
+            calcErr.textContent = "Introduce una IPv4 válida (por ejemplo 192.168.10.130).";
+            calcErr.className = "net-msg warn";
+            return;
+          }
+          var mask = (0xFFFFFFFF << (32 - c)) >>> 0;
+          var net = (ip & mask) >>> 0;
+          var bc = (net | (~mask >>> 0)) >>> 0;
+          var hosts = Math.pow(2, 32 - c) - 2;
+          setR("net", toIp(net) + "/" + c);
+          setR("mask", toIp(mask));
+          setR("bc", toIp(bc));
+          setR("first", toIp(net + 1));
+          setR("last", toIp(bc - 1));
+          setR("hosts", hosts.toLocaleString("es-PE"));
+          calcErr.textContent = "Cálculo correcto. Un host puede ir de " + toIp(net + 1) + " a " + toIp(bc - 1) + ".";
+          calcErr.className = "net-msg ok";
+        }
+        ipInput.addEventListener("input", calcSubnet);
+        cidrInput.addEventListener("input", calcSubnet);
+        calcSubnet();
+      }
+
+      // Quiz
+      var quizQ = document.getElementById("quizQ");
+      if (quizQ) {
+        var questions = [
+          { q: "¿Qué dispositivo conecta redes distintas y enruta paquetes IP?", o: ["Switch", "Router", "Hub", "Repetidor"], a: 1, e: "El router trabaja en la capa 3 y decide la mejor ruta entre redes." },
+          { q: "¿En qué capa del modelo OSI trabaja un switch?", o: ["Capa 1 (Física)", "Capa 3 (Red)", "Capa 2 (Enlace de datos)", "Capa 7 (Aplicación)"], a: 2, e: "El switch reenvía tramas usando direcciones MAC, en la capa 2." },
+          { q: "¿Qué comando muestra el estado resumido de las interfaces?", o: ["show ip interface brief", "show vlan id", "ping interface", "enable secret"], a: 0, e: "show ip interface brief lista cada interfaz con su IP y su estado." },
+          { q: "¿Cuántos hosts útiles tiene una red /26?", o: ["64", "30", "126", "62"], a: 3, e: "2^6 = 64 direcciones, menos la de red y la de broadcast, quedan 62." },
+          { q: "¿Qué modo de Packet Tracer permite ver cada paquete paso a paso?", o: ["Realtime", "Simulación", "Actividad", "Consola"], a: 1, e: "El modo Simulación muestra el recorrido y la PDU de cada paquete." }
+        ];
+        var qIdx = 0;
+        var qScore = 0;
+        var qDone = false;
+        var quizOpts = document.getElementById("quizOpts");
+        var quizFb = document.getElementById("quizFb");
+        var quizNext = document.getElementById("quizNext");
+        var quizScore = document.getElementById("quizScore");
+        var quizReset = document.getElementById("quizReset");
+
+        function showQ() {
+          var item = questions[qIdx];
+          qDone = false;
+          quizQ.textContent = (qIdx + 1) + ". " + item.q;
+          quizOpts.innerHTML = "";
+          quizFb.textContent = "";
+          quizNext.style.display = "none";
+          item.o.forEach(function (txt, i) {
+            var b = document.createElement("button");
+            b.type = "button";
+            b.className = "quiz-opt";
+            b.textContent = txt;
+            b.addEventListener("click", function () { answer(i, b); });
+            quizOpts.appendChild(b);
+          });
+        }
+
+        function answer(i, btn) {
+          if (qDone) return;
+          qDone = true;
+          var item = questions[qIdx];
+          var btns = quizOpts.querySelectorAll(".quiz-opt");
+          btns[item.a].classList.add("right");
+          if (i === item.a) {
+            qScore++;
+            quizFb.textContent = "¡Correcto! " + item.e;
+          } else {
+            btn.classList.add("wrong");
+            quizFb.textContent = "Incorrecto. " + item.e;
+          }
+          quizScore.textContent = "Puntaje: " + qScore + "/" + questions.length;
+          quizNext.textContent = qIdx === questions.length - 1 ? "Ver resultado" : "Siguiente";
+          quizNext.style.display = "inline-block";
+        }
+
+        function finish() {
+          var msg = qScore >= 4 ? "¡Excelente! Dominas lo básico de redes." : (qScore >= 3 ? "Bien. Repasa los comandos y el modelo OSI." : "Sigue practicando: revisa las secciones anteriores y vuelve a intentarlo.");
+          quizQ.textContent = "Resultado final: " + qScore + " de " + questions.length;
+          quizOpts.innerHTML = "";
+          quizFb.textContent = msg;
+          quizNext.style.display = "none";
+          quizScore.className = "net-msg " + (qScore >= 3 ? "ok" : "warn");
+        }
+
+        quizNext.addEventListener("click", function () {
+          if (qIdx === questions.length - 1) { finish(); return; }
+          qIdx++;
+          showQ();
+        });
+        quizReset.addEventListener("click", function () {
+          qIdx = 0;
+          qScore = 0;
+          quizScore.textContent = "Puntaje: 0/" + questions.length;
+          quizScore.className = "net-msg";
+          showQ();
+        });
+        showQ();
+      }
+
+      // Formulario de comentarios (demostración, sin servidor)
+      var feedbackForm = document.getElementById("feedbackForm");
+      if (feedbackForm) {
+        var formMsg = document.getElementById("formMsg");
+        feedbackForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var nombre = document.getElementById("fNombre").value.trim();
+          formMsg.textContent = "¡Gracias, " + nombre + "! Tu comentario fue registrado (demostración: esta página no envía datos a ningún servidor).";
+          formMsg.className = "net-msg ok";
+          feedbackForm.reset();
+        });
+      }
+
+      document.addEventListener("click", function () {
+        if (langDrop) langDrop.classList.remove("open");
+      });
+    })();
+  </script>
+</body>
+</html>
